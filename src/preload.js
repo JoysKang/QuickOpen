@@ -34,9 +34,6 @@ let History = {
         enter: (action, callbackSetList) => {
             allHistory = []
             getHistory();
-            // if (!allHistory.length) {
-            //     getHistory();
-            // }
             callbackSetList(allHistory);
         },
 

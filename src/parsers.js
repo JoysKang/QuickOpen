@@ -32,7 +32,7 @@ function getIcon(key) {
 
 let parser = new xml2js.Parser();
 function jetBrainsParsers(fileName) {
-    if (fileName.indexOf('PyCharm') === -1) {
+    if (fileName.indexOf('xml') === -1) {
         return []
     }
 
