@@ -31,14 +31,13 @@ function getIcon(key) {
 
 
 let parser = new xml2js.Parser();
-function parsers(fileName) {
-    if (fileName.indexOf('xml') === -1) {
-        return {}
+function jetBrainsParsers(fileName) {
+    if (fileName.indexOf('PyCharm') === -1) {
+        return []
     }
 
     let projectList = []
     const ideName = getIdeName(fileName)
-
     const executableFile = getExecutableFile(ideName)
     const icon = getIcon(ideName)
     const data = fs.readFileSync(fileName)
@@ -55,7 +54,6 @@ function parsers(fileName) {
             projectList.push({
                 ideName: ideName,
                 icon: icon,
-                projectPath: projectPath,
                 executableFile: executableFile,
                 description: projectPath,
                 openTimestamp: options[options.findIndex((item) => item.$.name == "projectOpenTimestamp")].$.value, // 获取 name="projectOpenTimestamp" 的 option 元素的 value 值
@@ -67,9 +65,11 @@ function parsers(fileName) {
     return projectList;
 }
 
-// parsers("/Users/joys/Library/Application\ Support/JetBrains/PyCharm2020.3/options/recentProjects.xml")
-
 
 module.exports = {
-    parsers,
+    jetBrainsParsers,
 };
+
+
+// jetBrainsParsers("/Users/joys/Library/Application\ Support/JetBrains/PyCharm2020.3/options/recentProjects.xml")
+
