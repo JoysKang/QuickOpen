@@ -50,7 +50,7 @@ function jetBrainsParsers(fileName) {
         option.map[0].entry.map((item) => {
             const options = item.value[0].RecentProjectMetaInfo[0].option;
             // const projectPath = item.$.key
-            const projectPath = item.$.key.replace("$USER_HOME$", utools.getPath("home"))   // "$USER_HOME$" 得替换成用户的家目录
+            const projectPath = item.$.key.replace("$USER_HOME$", config.home)   // "$USER_HOME$" 得替换成用户的家目录
             projectList.push({
                 ideName: ideName,
                 icon: icon,
@@ -67,7 +67,7 @@ function jetBrainsParsers(fileName) {
 
 
 module.exports = {
-    jetBrainsParsers,
+    jetBrainsParsers
 };
 
 

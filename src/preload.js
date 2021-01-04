@@ -11,9 +11,9 @@ function getHistory() {
     // 遍历目录下获取所有的 recentProjects.xml 文件
     let recentProjects = []
     config.ideHistoryDir.forEach(function (element) {
-        const files = execSync("find " + element + " -name '*recentProjects*'");
+        const files = execSync("find " + config.home + element + " -name '*recentProjects*'");
         const str = files.toString("utf8").trim();
-        recentProjects = str.split(/[\n|\r\n]/)
+        recentProjects.push(...str.split(/[\n|\r\n]/))
     })
 
     // 读取所有的文件的配置

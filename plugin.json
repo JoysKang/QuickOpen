@@ -3,15 +3,10 @@
 	"version": "0.0.1",
 	"description": "快速打开历史代码",
 	"author": "Joys",
-	"homepage": "",
+	"homepage": "https://github.com/JoysKang/QuickOpen.git",
 	"preload": "src/preload.js",
 	"logo": "logo.png",
 	"platform": ["darwin"],
-	"development": {
-		"preload": "src/preload.js",
-		"logo": "logo.png",
-		"buildPath": "/Users/joys/Downloads"
-	},
 	"features": [
 		{
 			"code": "History",
