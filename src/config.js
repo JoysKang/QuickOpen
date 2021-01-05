@@ -1,5 +1,6 @@
 // home
 const home = utools.getPath("home")
+// const home = "/Users/joys/"
 
 // 配置
 const ideHistoryDir = [

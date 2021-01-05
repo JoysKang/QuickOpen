@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const xml2js = require('xml2js')
+const xml2js = require('../lib/xml2js')
 const config = require('./config')
 
 const ideNames = Object.keys(config.executableFile)
@@ -62,6 +62,7 @@ function jetBrainsParsers(fileName) {
             });
         });
      });
+    // console.log(projectList)
     return projectList;
 }
 
