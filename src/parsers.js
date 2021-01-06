@@ -31,7 +31,7 @@ function getIcon(key) {
 
 
 let parser = new xml2js.Parser();
-function jetBrainsParsers(fileName) {
+function jetBrainsParsers(fileName, deDuplication) {
     if (fileName.indexOf('xml') === -1) {
         return []
     }
@@ -48,18 +48,21 @@ function jetBrainsParsers(fileName) {
                 component.option.findIndex((item) => item.$.name == "additionalInfo") // 获取 name="additionalInfo" 的 option 元素
                 ];
         option.map[0].entry.map((item) => {
-            const options = item.value[0].RecentProjectMetaInfo[0].option;
             // const projectPath = item.$.key
             const projectPath = item.$.key.replace("$USER_HOME$", config.home)   // "$USER_HOME$" 得替换成用户的家目录
-            projectList.push({
-                ideName: ideName,
-                icon: icon,
-                executableFile: executableFile,
-                description: projectPath,
-                openTimestamp: options[options.findIndex((item) => item.$.name == "projectOpenTimestamp")].$.value, // 获取 name="projectOpenTimestamp" 的 option 元素的 value 值
-                title: path.basename(projectPath)
-
-            });
+            const mark = ideName + projectPath
+            if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
+                const options = item.value[0].RecentProjectMetaInfo[0].option;
+                deDuplication.push(mark)
+                projectList.push({
+                    ideName: ideName,
+                    icon: icon,
+                    executableFile: executableFile,
+                    description: projectPath,
+                    openTimestamp: options[options.findIndex((item) => item.$.name == "projectOpenTimestamp")].$.value, // 获取 name="projectOpenTimestamp" 的 option 元素的 value 值
+                    title: path.basename(projectPath)
+                });
+            }
         });
      });
     // console.log(projectList)

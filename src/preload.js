@@ -17,9 +17,10 @@ function getHistory() {
     })
 
     // 读取所有的文件的配置
+    let deDuplication = []; // 过滤重复
     recentProjects.forEach(function (element) {
         if (element.indexOf("JetBrains") !== -1) {
-            allHistory.push(...parsers.jetBrainsParsers(element))
+            allHistory.push(...parsers.jetBrainsParsers(element, deDuplication))
         }
     })
 
