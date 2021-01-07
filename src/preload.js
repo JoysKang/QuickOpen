@@ -11,7 +11,8 @@ function getHistory() {
     // 遍历目录下获取所有的 recentProjects.xml 文件
     let recentProjects = []
     config.ideHistoryDir.forEach(function (element) {
-        const files = execSync("find " + config.home + element + " -name '*recentProjects*'");
+        // JetBrains 中 Rider 使用的是 recentSolutions.xml 其他 IDE 使用的是 recentProjects.xml
+        const files = execSync("find " + config.home + element + " -name 'recentProjects.xml' -or -name 'recentSolutions.xml'");
         const str = files.toString("utf8").trim();
         recentProjects.push(...str.split(/[\n|\r\n]/))
     })
@@ -46,7 +47,10 @@ let History = {
 
         select: (action, itemData) => {
             const cmd = itemData.executableFile;
-            const command = `"${cmd}" "${itemData.description}"`;
+            let command = `"${cmd}" "${itemData.description}"`;
+            if (cmd.indexOf("datagrip") !== -1) {   // datagrip 没有历史项目，直接打开 datagrip
+                command = `"${cmd}"`;
+            }
             exec(command, (err) => {
                 if (err) utools.showNotification(err);
             });

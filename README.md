@@ -4,7 +4,7 @@
 项目地址：[https://github.com/JoysKang/QuickOpen](https://github.com/JoysKang/QuickOpen)  
 
 Todo  
-- [ ] 完善JetBrains软件配置
+- [x] 完善JetBrains软件配置
 - [x] JetBrains多版本问题
 - [ ] 打开速度优化
 - [ ] Xcode 兼容
