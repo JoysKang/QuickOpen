@@ -1,4 +1,4 @@
-const { exec, execSync } = require("child_process");
+const {exec, execSync} = require("child_process");
 const parsers = require('./parsers');
 const config = require('./config');
 
@@ -7,18 +7,29 @@ const config = require('./config');
  * 打开历史项目的功能 *
  *******************/
 let allHistory = [];
+let deDuplication = []; // 过滤重复
+let searchTimer = 0
+
 function getHistory() {
-    // 遍历目录下获取所有的 recentProjects.xml 文件
     let recentProjects = []
+    const minute = Math.ceil(((new Date()).valueOf() - searchTimer) / 6000).toString()
+
+    // 遍历目录下获取所有的 recentProjects.xml 文件
     config.ideHistoryDir.forEach(function (element) {
         // JetBrains 中 Rider 使用的是 recentSolutions.xml 其他 IDE 使用的是 recentProjects.xml
-        const files = execSync("find " + config.home + element + " -name 'recentProjects.xml' -or -name 'recentSolutions.xml'");
+        // console.time("find");
+        const findCmd = "find ".concat(config.home, element, " -mmin -", minute,
+            " \\( -name 'recentProjects.xml' -o -name 'recentSolutions.xml' \\)")
+        const files = execSync(findCmd);
+        // console.timeEnd("find");
+        if (!files.length) {
+            return
+        }
         const str = files.toString("utf8").trim();
         recentProjects.push(...str.split(/[\n|\r\n]/))
     })
 
     // 读取所有的文件的配置
-    let deDuplication = []; // 过滤重复
     recentProjects.forEach(function (element) {
         if (element.indexOf("JetBrains") !== -1) {
             allHistory.push(...parsers.jetBrainsParsers(element, deDuplication))
@@ -34,8 +45,10 @@ let History = {
     mode: "list",
     args: {
         enter: (action, callbackSetList) => {
-            allHistory = []
+            // console.time();
             getHistory();
+            // console.timeEnd();
+            searchTimer = (new Date()).valueOf();
             callbackSetList(allHistory);
         },
 
