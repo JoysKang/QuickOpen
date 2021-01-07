@@ -28,7 +28,7 @@ const executableFile = {
 // icon
 icons = {
     "appcode": "icons/AppCode.png",
-    "clion": "icons/Clion.png",
+    "clion": "icons/CLion.png",
     "datagrip": "icons/DataGrip.png",
     "goland": "icons/GoLand.png",
     "idea": "icons/IntelliJ IDEA.png",

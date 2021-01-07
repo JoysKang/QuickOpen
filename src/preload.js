@@ -23,6 +23,8 @@ function getHistory() {
         const files = execSync(findCmd);
         // console.timeEnd("find");
         if (!files.length) {
+            allHistory = allHistory
+                .sort((item1, item2) => item2.openTimestamp - item1.openTimestamp)
             return
         }
         const str = files.toString("utf8").trim();
@@ -64,6 +66,7 @@ let History = {
             if (cmd.indexOf("datagrip") !== -1) {   // datagrip 没有历史项目，直接打开 datagrip
                 command = `"${cmd}"`;
             }
+            itemData.openTimestamp = searchTimer;
             exec(command, (err) => {
                 if (err) utools.showNotification(err);
             });
