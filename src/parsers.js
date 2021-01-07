@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const xml2js = require('../lib/xml2js')
+const xmlParser = require('../lib/parser')
 const config = require('./config')
 
 const ideNames = Object.keys(config.executableFile)
@@ -30,7 +30,7 @@ function getIcon(key) {
 }
 
 
-let parser = new xml2js.Parser();
+let parser = new xmlParser.Parser();
 function jetBrainsParsers(fileName, deDuplication) {
     if (fileName.indexOf('xml') === -1) {
         return []
