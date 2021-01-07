@@ -8,25 +8,19 @@ const config = require('./config');
  *******************/
 let allHistory = [];
 let deDuplication = []; // 过滤重复
-let searchTimer = 0
 
-function getHistory() {
+function getHistory(reload= 0) {
     let recentProjects = []
-    const minute = Math.ceil(((new Date()).valueOf() - searchTimer) / 6000).toString()
+    allHistory = []
+    deDuplication = []
 
     // 遍历目录下获取所有的 recentProjects.xml 文件
     config.ideHistoryDir.forEach(function (element) {
         // JetBrains 中 Rider 使用的是 recentSolutions.xml 其他 IDE 使用的是 recentProjects.xml
-        // console.time("find");
-        const findCmd = "find ".concat(config.home, element, " -mmin -", minute,
+        const findCmd = "find ".concat(config.home, element,
             " \\( -name 'recentProjects.xml' -o -name 'recentSolutions.xml' \\)")
+
         const files = execSync(findCmd);
-        // console.timeEnd("find");
-        if (!files.length) {
-            allHistory = allHistory
-                .sort((item1, item2) => item2.openTimestamp - item1.openTimestamp)
-            return
-        }
         const str = files.toString("utf8").trim();
         recentProjects.push(...str.split(/[\n|\r\n]/))
     })
@@ -47,10 +41,7 @@ let History = {
     mode: "list",
     args: {
         enter: (action, callbackSetList) => {
-            // console.time();
             getHistory();
-            // console.timeEnd();
-            searchTimer = (new Date()).valueOf();
             callbackSetList(allHistory);
         },
 
@@ -66,7 +57,6 @@ let History = {
             if (cmd.indexOf("datagrip") !== -1) {   // datagrip 没有历史项目，直接打开 datagrip
                 command = `"${cmd}"`;
             }
-            itemData.openTimestamp = searchTimer;
             exec(command, (err) => {
                 if (err) utools.showNotification(err);
             });
