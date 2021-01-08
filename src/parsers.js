@@ -6,7 +6,7 @@ const config = require('./config')
 const ideNames = Object.keys(config.executableFile)
 
 // 过去 ide 的名称
-function getIdeName(fileName) {
+function getJetBrainsIdeName(fileName) {
     let ideName = "";
     for (const item of ideNames) {
         if (fileName.toLowerCase().indexOf(item) !== -1) {
@@ -37,7 +37,7 @@ function jetBrainsParsers(fileName, deDuplication) {
     }
 
     let projectList = []
-    const ideName = getIdeName(fileName)
+    const ideName = getJetBrainsIdeName(fileName)
     const executableFile = getExecutableFile(ideName)
     const icon = getIcon(ideName)
     const data = fs.readFileSync(fileName)
@@ -81,10 +81,45 @@ function jetBrainsParsers(fileName, deDuplication) {
 }
 
 
+function vscodeParsers(fileName, deDuplication) {
+    let data = fs.readFileSync(fileName)
+    if (!data.length) {
+        return
+    }
+
+    data = JSON.parse(data)
+    const openedPathsList = data["openedPathsList"]
+    const projects = openedPathsList["workspaces3"].concat(openedPathsList["files2"]) // 需清除掉 file://
+
+    let projectList = []
+    const ideName = "vscode"
+    const executableFile = getExecutableFile(ideName)
+    const icon = getIcon(ideName)
+    projects.map((item) => {
+        item = item.replace("file://", "")
+        const mark = ideName + item
+        if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
+            deDuplication.push(mark)
+            projectList.push({
+                ideName: ideName,
+                icon: icon,
+                executableFile: executableFile,
+                description: item,
+                openTimestamp: 0,
+                title: path.basename(item)
+            });
+        }
+    })
+    return projectList;
+}
+
+
 module.exports = {
-    jetBrainsParsers
+    jetBrainsParsers,
+    vscodeParsers
 };
 
 
 // jetBrainsParsers("/Users/joys/Library/Application\ Support/JetBrains/PyCharm2020.3/options/recentProjects.xml")
+// vscodeParsers("/Users/joys/Library/Application\ Support/Code/storage.json", [])
 

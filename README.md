@@ -10,4 +10,4 @@ Todo
 - [x] JetBrains多版本问题
 - [x] 打开速度优化
 - [ ] Xcode 兼容
-- [ ] vscode 兼容
+- [x] vscode 兼容

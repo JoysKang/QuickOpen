@@ -9,14 +9,21 @@ const config = require('./config');
 let allHistory = [];
 let deDuplication = []; // 过滤重复
 
-function getHistory(reload= 0) {
+function getHistory() {
     let recentProjects = []
     allHistory = []
     deDuplication = []
 
     // 遍历目录下获取所有的 recentProjects.xml 文件
-    config.ideHistoryDir.forEach(function (element) {
+    config.ideHistory.forEach(function (element) {
         // JetBrains 中 Rider 使用的是 recentSolutions.xml 其他 IDE 使用的是 recentProjects.xml
+        // 判断是文件还是文件夹
+        if (element[element.length-1] !== "/") {    // 文件
+            recentProjects.push(config.home.concat(element))
+            return
+        }
+
+        // 文件夹
         const findCmd = "find ".concat(config.home, element,
             " \\( -name 'recentProjects.xml' -o -name 'recentSolutions.xml' \\)")
 
@@ -27,8 +34,10 @@ function getHistory(reload= 0) {
 
     // 读取所有的文件的配置
     recentProjects.forEach(function (element) {
-        if (element.indexOf("JetBrains") !== -1) {
+        if (element.indexOf("JetBrains") !== -1) {  // JetBrains
             allHistory.push(...parsers.jetBrainsParsers(element, deDuplication))
+        } else if (element.indexOf("Code/storage.json") !== -1) {   // vscode
+            allHistory.push(...parsers.vscodeParsers(element, deDuplication))
         }
     })
 

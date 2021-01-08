@@ -1,12 +1,13 @@
 // home
 const home = utools.getPath("home")
-// const home = "/Users/joys/"
+// const home = "/Users/joys"
 
 
 // 配置
-const ideHistoryDir = [
-    // 多添加一个 \ 是防止下边字符串拼接时被转义
-    "/Library/Application\\ Support/JetBrains"
+const ideHistory = [
+    // 文件夹多添加一个 \ 是防止下边字符串拼接时被转义
+    "/Library/Application\\ Support/JetBrains/",
+    "/Library/Application\ Support/Code/storage.json"
 ]
 
 
@@ -21,7 +22,8 @@ const executableFile = {
     "pycharm": "/Applications/PyCharm.app/Contents/MacOS/pycharm",
     "rider": "/Applications/Rider.app/Contents/MacOS/rider",
     "rubymine": "/Applications/RubyMine.app/Contents/MacOS/rubymine",
-    "webstorm": "/Applications/WebStorm.app/Contents/MacOS/webstorm"
+    "webstorm": "/Applications/WebStorm.app/Contents/MacOS/webstorm",
+    "vscode": "/Applications/Visual\ Studio\ Code.app/Contents/MacOS/Electron"
 }
 
 
@@ -36,13 +38,14 @@ icons = {
     "pycharm": "icons/PyCharm.png",
     "rider": "icons/Rider.png",
     "rubymine": "icons/RubyMine.png",
-    "webstorm": "icons/WebStorm.png"
+    "webstorm": "icons/WebStorm.png",
+    "vscode": "icons/Visual Studio Code.png"
 }
 
 
 module.exports = {
     home,
-    ideHistoryDir,
+    ideHistory,
     executableFile,
     icons
 };
