@@ -9,5 +9,5 @@ Todo
 - [x] 完善JetBrains软件配置
 - [x] JetBrains多版本问题
 - [x] 打开速度优化
-- [ ] Xcode 兼容
+- [ ] Xcode 兼容(暂时不知道Xcode历史项目的记录位置，暂时放放)
 - [x] vscode 兼容
