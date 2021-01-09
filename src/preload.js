@@ -26,7 +26,6 @@ function getHistory() {
         // 文件夹
         const findCmd = "find ".concat(config.home, element,
             " \\( -name 'recentProjects.xml' -o -name 'recentSolutions.xml' \\)")
-
         const files = execSync(findCmd);
         const str = files.toString("utf8").trim();
         recentProjects.push(...str.split(/[\n|\r\n]/))
@@ -55,7 +54,7 @@ let History = {
         },
 
         search: (action, searchWord, callbackSetList) => {
-            if (!searchWord) return allHistory;
+            if (!searchWord) return callbackSetList(allHistory);
             return callbackSetList(allHistory.filter((x) =>
                 x.description.toLowerCase().indexOf(searchWord.toLowerCase()) !== -1));
         },
