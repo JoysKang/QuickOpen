@@ -10,7 +10,7 @@
 本项目地址：[https://github.com/JoysKang/QuickOpen](https://github.com/JoysKang/QuickOpen)  
 uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/master/utools-jetbrains-history](https://github.com/marsvet/uTools-plugins/tree/master/utools-jetbrains-history)
 
-### item
+### 更新日志
 
 v0.0.2
 - 优化启动速度，提升约 4 ~ 5 倍；
