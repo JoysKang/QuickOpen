@@ -1,4 +1,5 @@
-const {exec, execSync} = require("child_process");
+var fs = require("fs");
+const {exec} = require("child_process");
 const parsers = require('./parsers');
 const config = require('./config');
 
@@ -6,39 +7,102 @@ const config = require('./config');
 /*******************
  * 打开历史项目的功能 *
  *******************/
+let recentProjects = [];
 let allHistory = [];
 let deDuplication = []; // 过滤重复
 
-function getHistory() {
-    let recentProjects = []
+
+function readFileList(path, filesList) {
+    let files = fs.readdirSync(path);
+    files.forEach(function (itm, index) {
+        let stat = fs.statSync(path + itm);
+        if (stat.isDirectory() && (path + itm).indexOf("options")) {
+            readFileList(path + itm + "/", filesList)
+        } else {
+            if (itm === "recentProjects.xml" || itm === "recentSolutions.xml") {
+                filesList.push(path + itm);
+            }
+        }
+    })
+    return filesList
+}
+
+
+// 查找项目历史文件
+function serarchFiles(element) {
+    // JetBrains 中 Rider 使用的是 recentSolutions.xml 其他 IDE 使用的是 recentProjects.xml
+    // 判断是文件还是文件夹
+    if (element[element.length - 1] !== "/") {    // 文件
+        return [config.home.concat(element)]
+    }
+
+    // JetBrains 文件夹
+    if (element.indexOf("JetBrains") !== -1) {
+        return readFileList(config.home.concat(element), [])
+    }
+}
+
+// 读取项目历史文件
+function getFileContent(element) {
+    if (element.indexOf("JetBrains") !== -1) {  // JetBrains
+        return parsers.jetBrainsParsers(element, deDuplication)
+    } else if (element.indexOf("Code/storage.json") !== -1) {   // vscode
+        return parsers.vscodeParsers(element, deDuplication)
+    }
+}
+
+
+let asyncHistoryIterable = {
+    [Symbol.asyncIterator]() {
+        return {
+            i: 0,
+            next() {
+                if (this.i < config.ideHistory.length) {
+                    return Promise.resolve({
+                        value: serarchFiles(config.ideHistory[this.i++]),
+                        done: false
+                    });
+                }
+
+                return Promise.resolve({done: true});
+            }
+        };
+    }
+};
+
+
+let asyncFileHistoryIterable = {
+    [Symbol.asyncIterator]() {
+        return {
+            i: 0,
+            next() {
+                if (this.i < recentProjects.length) {
+                    return Promise.resolve({
+                        value: getFileContent(recentProjects[this.i++]),
+                        done: false
+                    });
+                }
+
+                return Promise.resolve({done: true});
+            }
+        };
+    }
+};
+
+
+async function getHistory() {
     allHistory = []
     deDuplication = []
 
     // 遍历目录下获取所有的 recentProjects.xml 文件
-    config.ideHistory.forEach(function (element) {
-        // JetBrains 中 Rider 使用的是 recentSolutions.xml 其他 IDE 使用的是 recentProjects.xml
-        // 判断是文件还是文件夹
-        if (element[element.length-1] !== "/") {    // 文件
-            recentProjects.push(config.home.concat(element))
-            return
-        }
-
-        // 文件夹
-        const findCmd = "find ".concat(config.home, element,
-            " \\( -name 'recentProjects.xml' -o -name 'recentSolutions.xml' \\)")
-        const files = execSync(findCmd);
-        const str = files.toString("utf8").trim();
-        recentProjects.push(...str.split(/[\n|\r\n]/))
-    })
+    for await (element of asyncHistoryIterable) {
+        recentProjects.push(...element)
+    }
 
     // 读取所有的文件的配置
-    recentProjects.forEach(function (element) {
-        if (element.indexOf("JetBrains") !== -1) {  // JetBrains
-            allHistory.push(...parsers.jetBrainsParsers(element, deDuplication))
-        } else if (element.indexOf("Code/storage.json") !== -1) {   // vscode
-            allHistory.push(...parsers.vscodeParsers(element, deDuplication))
-        }
-    })
+    for await (element of asyncFileHistoryIterable) {
+        allHistory.push(...element)
+    }
 
     allHistory = allHistory
         .sort((item1, item2) => item2.openTimestamp - item1.openTimestamp)
@@ -48,8 +112,8 @@ function getHistory() {
 let History = {
     mode: "list",
     args: {
-        enter: (action, callbackSetList) => {
-            getHistory();
+        enter: async (action, callbackSetList) => {
+            await getHistory();
             callbackSetList(allHistory);
         },
 

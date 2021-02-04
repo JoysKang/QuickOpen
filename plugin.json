@@ -1,17 +1,21 @@
 {
-	"pluginName": "Quick Open",
-	"version": "0.0.1",
-	"description": "快速打开历史代码",
-	"author": "Joys",
-	"homepage": "https://github.com/JoysKang/QuickOpen.git",
-	"preload": "src/preload.js",
-	"logo": "logo.png",
-	"platform": ["darwin"],
-	"features": [
-		{
-			"code": "History",
-			"explain": "快速打开历史项目",
-			"cmds": ["History"]
-		}
-	]
+  "pluginName": "Quick Open",
+  "version": "0.0.2",
+  "description": "快速打开历史代码",
+  "author": "Joys",
+  "homepage": "https://github.com/JoysKang/QuickOpen.git",
+  "preload": "src/preload.js",
+  "logo": "logo.png",
+  "platform": [
+    "darwin"
+  ],
+  "features": [
+    {
+      "code": "History",
+      "explain": "快速打开历史项目",
+      "cmds": [
+        "History"
+      ]
+    }
+  ]
 }

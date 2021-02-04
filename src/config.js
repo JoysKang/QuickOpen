@@ -6,7 +6,7 @@ const home = utools.getPath("home")
 // 配置
 const ideHistory = [
     // 文件夹多添加一个 \ 是防止下边字符串拼接时被转义
-    "/Library/Application\\ Support/JetBrains/",
+    "/Library/Application\ Support/JetBrains/",
     "/Library/Application\ Support/Code/storage.json"
 ]
 

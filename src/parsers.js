@@ -31,6 +31,7 @@ function getIcon(key) {
 
 
 let parser = new xmlParser.Parser();
+
 function jetBrainsParsers(fileName, deDuplication) {
     if (fileName.indexOf('xml') === -1) {
         return []
@@ -75,7 +76,7 @@ function jetBrainsParsers(fileName, deDuplication) {
                 }
             }
         });
-     });
+    });
     // console.log(projectList)
     return projectList;
 }
@@ -122,4 +123,3 @@ module.exports = {
 
 // jetBrainsParsers("/Users/joys/Library/Application\ Support/JetBrains/PyCharm2020.3/options/recentProjects.xml")
 // vscodeParsers("/Users/joys/Library/Application\ Support/Code/storage.json", [])
-
