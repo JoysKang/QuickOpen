@@ -1,4 +1,4 @@
-var fs = require("fs");
+const fs = require("fs");
 const {exec} = require("child_process");
 const parsers = require('./parsers');
 const config = require('./config');
@@ -41,6 +41,7 @@ function serarchFiles(element) {
         return readFileList(config.home.concat(element), [])
     }
 }
+
 
 // 读取项目历史文件
 function getFileContent(element) {
@@ -146,9 +147,3 @@ let History = {
 window.exports = {
     History
 };
-
-// getHistory()
-// const command = `"/Applications/PyCharm.app/Contents/MacOS/pycharm" "/Users/joys/work/code/tb_api/cms"`;
-// exec(command, (err) => {
-//     if (err) utools.showNotification("不是有效的可执行程序");
-// }); // 这种命令必须异步执行

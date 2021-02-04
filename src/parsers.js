@@ -119,7 +119,3 @@ module.exports = {
     jetBrainsParsers,
     vscodeParsers
 };
-
-
-// jetBrainsParsers("/Users/joys/Library/Application\ Support/JetBrains/PyCharm2020.3/options/recentProjects.xml")
-// vscodeParsers("/Users/joys/Library/Application\ Support/Code/storage.json", [])
