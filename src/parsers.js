@@ -115,7 +115,39 @@ function vscodeParsers(fileName, deDuplication) {
 }
 
 
+function sublimeParsers(fileName, deDuplication) {
+    let data = fs.readFileSync(fileName)
+    if (!data.length) {
+        return
+    }
+
+    data = JSON.parse(data)
+    const projects = data["folder_history"]
+
+    let projectList = []
+    const ideName = "sublime"
+    const executableFile = getExecutableFile(ideName)
+    const icon = getIcon(ideName)
+    projects.map((item) => {
+        const mark = ideName + item
+        if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
+            deDuplication.push(mark)
+            projectList.push({
+                ideName: ideName,
+                icon: icon,
+                executableFile: executableFile,
+                description: item,
+                openTimestamp: 0,
+                title: path.basename(item)
+            });
+        }
+    })
+    return projectList;
+}
+
+
 module.exports = {
     jetBrainsParsers,
-    vscodeParsers
+    vscodeParsers,
+    sublimeParsers
 };

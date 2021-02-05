@@ -12,9 +12,10 @@ let allHistory = [];
 let deDuplication = []; // 过滤重复
 
 
+// 搜索 JetBrains 的历史项目文件
 function readFileList(path, filesList) {
     let files = fs.readdirSync(path);
-    files.forEach(function (itm, index) {
+    files.forEach(function (itm) {
         let stat = fs.statSync(path + itm);
         if (stat.isDirectory() && (path + itm).indexOf("options")) {
             readFileList(path + itm + "/", filesList)
@@ -49,10 +50,13 @@ function getFileContent(element) {
         return parsers.jetBrainsParsers(element, deDuplication)
     } else if (element.indexOf("Code/storage.json") !== -1) {   // vscode
         return parsers.vscodeParsers(element, deDuplication)
+    } else if (element.indexOf("sublime_session") !== -1) {   // sublime
+        return parsers.sublimeParsers(element, deDuplication)
     }
 }
 
 
+// 项目异步迭代器
 let asyncHistoryIterable = {
     [Symbol.asyncIterator]() {
         return {
@@ -72,6 +76,7 @@ let asyncHistoryIterable = {
 };
 
 
+// 历史文件异步迭代器
 let asyncFileHistoryIterable = {
     [Symbol.asyncIterator]() {
         return {
@@ -147,3 +152,10 @@ let History = {
 window.exports = {
     History
 };
+
+// (async () => {
+//     console.log(allHistory)
+//     await getHistory()
+//     console.log(allHistory[0])
+//     console.log(allHistory[1])
+// })()
