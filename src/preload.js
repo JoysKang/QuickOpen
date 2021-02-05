@@ -125,8 +125,19 @@ let History = {
 
         search: (action, searchWord, callbackSetList) => {
             if (!searchWord) return callbackSetList(allHistory);
-            return callbackSetList(allHistory.filter((x) =>
-                x.description.toLowerCase().indexOf(searchWord.toLowerCase()) !== -1));
+            // 搜索后排序(优先根据 title 显示)
+            let title_list = [];    // 根据 title 筛选出来的结果(优先显示)
+            let description_list = [];  // 根据 description 筛选出来的结果
+            for (let i=0; i<allHistory.length; i++) {
+                const item = allHistory[i]
+                if (item.title.toLowerCase().indexOf(searchWord.toLowerCase()) !== -1) {
+                    title_list.push(item)
+                } else if (item.description.toLowerCase().indexOf(searchWord.toLowerCase()) !== -1) {
+                    description_list.push(item)
+                }
+            }
+
+            return callbackSetList(title_list.concat(description_list));
         },
 
         select: (action, itemData) => {

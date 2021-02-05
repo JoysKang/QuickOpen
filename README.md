@@ -24,6 +24,7 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 v0.0.2
 - 优化启动速度，提升约 4 ~ 5 倍；
 - 添加sublime 兼容；
+- 搜索时优先根据项目名称筛选；
 
 v0.0.1
 - 发布
