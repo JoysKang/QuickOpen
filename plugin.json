@@ -1,7 +1,7 @@
 {
   "pluginName": "Quick Open",
   "version": "0.0.2",
-  "description": "快速打开JetBrains、vscode、sublime历史项目",
+  "description": "快速打开JetBrains、vscode、sublime、AndroidStudio历史项目",
   "author": "Joys",
   "homepage": "https://github.com/JoysKang/QuickOpen.git",
   "preload": "src/preload.js",

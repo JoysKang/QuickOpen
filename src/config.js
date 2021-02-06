@@ -27,7 +27,7 @@ const executableFile = {
     "webstorm": "/Applications/WebStorm.app/Contents/MacOS/webstorm",
     "vscode": "/Applications/Visual\ Studio\ Code.app/Contents/MacOS/Electron",
     "sublime": "/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl",
-    "androidstudio": "/Applications/Android\ Studio.app/Contents/MacOS/studio"
+    "studio": "/Applications/Android\ Studio.app/Contents/MacOS/studio"
 }
 
 
@@ -45,7 +45,7 @@ icons = {
     "webstorm": "icons/WebStorm.png",
     "vscode": "icons/Visual Studio Code.png",
     "sublime": "icons/sublime-text.png",
-    "androidstudio": "icons/androidStudio.png",
+    "studio": "icons/studio.png",
 }
 
 
