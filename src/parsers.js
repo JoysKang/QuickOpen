@@ -48,8 +48,9 @@ function jetBrainsParsers(fileName, deDuplication) {
             component.option[
                 component.option.findIndex((item) => item.$.name == "additionalInfo") // 获取 name="additionalInfo" 的 option 元素
                 ];
-        option.map[0].entry.map((item) => {
-            // const projectPath = item.$.key
+
+        for (let i = 0; i < option.map[0].entry.length; i++) {
+            const item = option.map[0].entry[i]
             const projectPath = item.$.key.replace("$USER_HOME$", config.home)   // "$USER_HOME$" 得替换成用户的家目录
             const mark = ideName + projectPath
             if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
@@ -75,7 +76,7 @@ function jetBrainsParsers(fileName, deDuplication) {
                     });
                 }
             }
-        });
+        }
     });
     // console.log(projectList)
     return projectList;

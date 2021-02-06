@@ -18,13 +18,15 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 - [ ] Xcode 兼容(暂时不知道Xcode历史项目的记录位置，暂时放放)
 - [x] vscode 兼容
 - [x] sublime 兼容
+- [x] AndroidStudio 兼容
 
 ### 更新日志
 
 v0.0.2
 - 优化启动速度，提升约 4 ~ 5 倍；
-- 添加sublime 兼容；
+- 添加 sublime 兼容；
 - 搜索时优先根据项目名称筛选；
+- 添加 AndroidStudio 兼容；
 
 v0.0.1
 - 发布

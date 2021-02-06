@@ -16,12 +16,30 @@ let deDuplication = []; // 过滤重复
 function readFileList(path, filesList) {
     let files = fs.readdirSync(path);
     files.forEach(function (itm) {
-        let stat = fs.statSync(path + itm);
-        if (stat.isDirectory() && (path + itm).indexOf("options")) {
-            readFileList(path + itm + "/", filesList)
+        let stat = fs.lstatSync(path + itm);
+        const absolute_path = path + itm
+        if (stat.isDirectory()) {
+
+            // 过滤 AndroidStudiox.x 下的非 options 目录
+            if (absolute_path.indexOf("Google") !== -1 &&
+                absolute_path.indexOf("AndroidStudio") === -1 &&
+                absolute_path.indexOf("options") === -1) {
+                return;
+            }
+
+            // 过滤 JetBrains 下的非 options 目录
+            if (absolute_path.indexOf("JetBrains") !== -1 &&
+                // !/\d/.test(absolute_path) &&
+                // 排除 JetBrains 下第一级的目录
+                absolute_path.split('/').indexOf('JetBrains') !== absolute_path.split('/').length - 2 &&
+                absolute_path.indexOf("options") === -1) {
+                return;
+            }
+
+            readFileList(absolute_path + "/", filesList)
         } else {
             if (itm === "recentProjects.xml" || itm === "recentSolutions.xml") {
-                filesList.push(path + itm);
+                filesList.push(absolute_path);
             }
         }
     })
@@ -37,8 +55,9 @@ function serarchFiles(element) {
         return [config.home.concat(element)]
     }
 
-    // JetBrains 文件夹
-    if (element.indexOf("JetBrains") !== -1) {
+    // JetBrains && AndroidStudio 文件夹
+    if (element.indexOf("JetBrains") !== -1 ||
+        element.indexOf("Google") !== -1) {
         return readFileList(config.home.concat(element), [])
     }
 }
@@ -46,7 +65,8 @@ function serarchFiles(element) {
 
 // 读取项目历史文件
 function getFileContent(element) {
-    if (element.indexOf("JetBrains") !== -1) {  // JetBrains
+    if (element.indexOf("AndroidStudio") !== -1 ||
+        element.indexOf("JetBrains") !== -1) {// JetBrains、androidstudio
         return parsers.jetBrainsParsers(element, deDuplication)
     } else if (element.indexOf("Code/storage.json") !== -1) {   // vscode
         return parsers.vscodeParsers(element, deDuplication)
@@ -165,8 +185,8 @@ window.exports = {
 };
 
 // (async () => {
+//     console.time('test')
+//     await getHistory();
 //     console.log(allHistory)
-//     await getHistory()
-//     console.log(allHistory[0])
-//     console.log(allHistory[1])
+//     console.timeEnd('test')
 // })()

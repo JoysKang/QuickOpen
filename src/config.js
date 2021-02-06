@@ -1,6 +1,6 @@
 // home
-const home = utools.getPath("home")
-// const home = "/Users/joys"
+// const home = utools.getPath("home")
+const home = "/Users/joys"
 
 
 // 配置
@@ -8,7 +8,8 @@ const ideHistory = [
     // 文件夹多添加一个 \ 是防止下边字符串拼接时被转义
     "/Library/Application\ Support/JetBrains/",
     "/Library/Application\ Support/Code/storage.json",
-    "/Library/Application\ Support/Sublime\ Text/Local/Session.sublime_session"
+    "/Library/Application\ Support/Sublime\ Text/Local/Session.sublime_session",
+    "/Library/Application\ Support/Google/"
 ]
 
 
@@ -25,7 +26,8 @@ const executableFile = {
     "rubymine": "/Applications/RubyMine.app/Contents/MacOS/rubymine",
     "webstorm": "/Applications/WebStorm.app/Contents/MacOS/webstorm",
     "vscode": "/Applications/Visual\ Studio\ Code.app/Contents/MacOS/Electron",
-    "sublime": "/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+    "sublime": "/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl",
+    "androidstudio": "/Applications/Android\ Studio.app/Contents/MacOS/studio"
 }
 
 
@@ -42,7 +44,8 @@ icons = {
     "rubymine": "icons/RubyMine.png",
     "webstorm": "icons/WebStorm.png",
     "vscode": "icons/Visual Studio Code.png",
-    "sublime": "icons/sublime-text.png"
+    "sublime": "icons/sublime-text.png",
+    "androidstudio": "icons/androidStudio.png",
 }
 
 
