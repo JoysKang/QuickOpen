@@ -117,6 +117,7 @@ let asyncFileHistoryIterable = {
 
 
 async function getHistory() {
+    recentProjects = []
     allHistory = []
     deDuplication = []
 
@@ -139,7 +140,9 @@ let History = {
     mode: "list",
     args: {
         enter: async (action, callbackSetList) => {
+            // console.time('start')
             await getHistory();
+            // console.timeEnd('start')
             callbackSetList(allHistory);
         },
 

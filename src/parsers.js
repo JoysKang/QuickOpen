@@ -30,6 +30,17 @@ function getIcon(key) {
 }
 
 
+// 判断路径是否存在
+function checkPath(path) {
+    try {
+        fs.accessSync(path);
+        return true
+    } catch (err) {
+        return false
+    }
+}
+
+
 let parser = new xmlParser.Parser();
 
 function jetBrainsParsers(fileName, deDuplication) {
@@ -70,7 +81,7 @@ function jetBrainsParsers(fileName, deDuplication) {
                         ideName: ideName,
                         icon: icon,
                         executableFile: executableFile,
-                        description: projectPath,
+                        description: checkPath(projectPath) ? projectPath : "项目路径已不存在",
                         openTimestamp: options[options.findIndex((item) => item.$.name == "projectOpenTimestamp")].$.value, // 获取 name="projectOpenTimestamp" 的 option 元素的 value 值
                         title: path.basename(projectPath)
                     });
@@ -97,8 +108,8 @@ function vscodeParsers(fileName, deDuplication) {
     const ideName = "vscode"
     const executableFile = getExecutableFile(ideName)
     const icon = getIcon(ideName)
-    projects.map((item) => {
-        item = item.replace("file://", "")
+    for (let i = 0; i < projects.length; i++) {
+        const item = projects[i].replace("file://", "")
         const mark = ideName + item
         if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
             deDuplication.push(mark)
@@ -106,12 +117,12 @@ function vscodeParsers(fileName, deDuplication) {
                 ideName: ideName,
                 icon: icon,
                 executableFile: executableFile,
-                description: item,
+                description: checkPath(item) ? item : "项目路径已不存在",
                 openTimestamp: 0,
                 title: path.basename(item)
             });
         }
-    })
+    }
     return projectList;
 }
 
@@ -129,7 +140,8 @@ function sublimeParsers(fileName, deDuplication) {
     const ideName = "sublime"
     const executableFile = getExecutableFile(ideName)
     const icon = getIcon(ideName)
-    projects.map((item) => {
+    for (let i = 0; i < projects.length; i++) {
+        const item = projects[i]
         const mark = ideName + item
         if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
             deDuplication.push(mark)
@@ -137,12 +149,12 @@ function sublimeParsers(fileName, deDuplication) {
                 ideName: ideName,
                 icon: icon,
                 executableFile: executableFile,
-                description: item,
+                description: checkPath(item) ? item : "项目路径已不存在",
                 openTimestamp: 0,
                 title: path.basename(item)
             });
         }
-    })
+    }
     return projectList;
 }
 
