@@ -151,7 +151,7 @@ let History = {
             if (!searchWord) return callbackSetList(allHistory);
 
             let searchResult = []
-            // 通过:py、:web等关键字直接搜索相对应IDE的历史记录
+            // 通过:pycharm、:webstorm等关键字直接搜索相对应IDE的历史记录
             if (searchWord.startsWith(':')) {
                 const key = searchWord.split(':')[1].toLowerCase()
                 let keyList = []
