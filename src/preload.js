@@ -10,6 +10,7 @@ const config = require('./config');
 let recentProjects = [];
 let allHistory = [];
 let deDuplication = []; // 过滤重复
+let ideNames = Object.keys(config.icons)
 
 
 // 搜索 JetBrains 的历史项目文件
@@ -148,19 +149,35 @@ let History = {
 
         search: (action, searchWord, callbackSetList) => {
             if (!searchWord) return callbackSetList(allHistory);
-            // 搜索后排序(优先根据 title 显示)
-            let title_list = [];    // 根据 title 筛选出来的结果(优先显示)
-            let description_list = [];  // 根据 description 筛选出来的结果
-            for (let i=0; i<allHistory.length; i++) {
-                const item = allHistory[i]
-                if (item.title.toLowerCase().indexOf(searchWord.toLowerCase()) !== -1) {
-                    title_list.push(item)
-                } else if (item.description.toLowerCase().indexOf(searchWord.toLowerCase()) !== -1) {
-                    description_list.push(item)
+
+            let searchResult = []
+            // 通过:py、:web等关键字直接搜索相对应IDE的历史记录
+            if (searchWord.startsWith(':')) {
+                const key = searchWord.split(':')[1].toLowerCase()
+                let keyList = []
+                for (let i=0; i<ideNames.length; i++) {
+                    const item = ideNames[i]
+                    if (item.indexOf(key.toLowerCase()) !== -1) {
+                        keyList.push(item)
+                    }
                 }
+                searchResult = allHistory.filter((history) => keyList.indexOf(history.ideName) !== -1)
+            } else {
+                // 搜索后排序(优先根据 title 显示)
+                let title_list = [];    // 根据 title 筛选出来的结果(优先显示)
+                let description_list = [];  // 根据 description 筛选出来的结果
+                for (let i=0; i<allHistory.length; i++) {
+                    const item = allHistory[i]
+                    if (item.title.toLowerCase().indexOf(searchWord.toLowerCase()) !== -1) {
+                        title_list.push(item)
+                    } else if (item.description.toLowerCase().indexOf(searchWord.toLowerCase()) !== -1) {
+                        description_list.push(item)
+                    }
+                }
+                searchResult = title_list.concat(description_list)
             }
 
-            return callbackSetList(title_list.concat(description_list));
+            return callbackSetList(searchResult);
         },
 
         select: (action, itemData) => {

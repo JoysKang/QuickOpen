@@ -19,7 +19,7 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 - [x] sublime 兼容
 - [x] AndroidStudio 兼容
 - [x] 如果项目已不存在，直接从搜索结果中~~移除~~标记出路径不存在
-- [ ] 搜索栏中通过:py、:web等关键字直接搜索相对应IDE的历史记录
+- [x] 搜索栏中通过:py、:web等关键字直接搜索相对应IDE的历史记录
 
 ### 更新日志
 
