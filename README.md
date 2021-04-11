@@ -32,9 +32,12 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 
 ### 更新日志
 
+v0.0.4
+- 修复 vscode 升级带来的bug；
+
 v0.0.3
-- 如果项目已不存在，直接从搜索结果中~~移除~~标记出路径不存在
-- 搜索栏中通过:pycharm、:webstorm等关键字直接搜索相对应IDE的历史记录
+- 如果项目已不存在，直接从搜索结果中~~移除~~标记出路径不存在；
+- 搜索栏中通过:pycharm、:webstorm等关键字直接搜索相对应IDE的历史记录；
 
 v0.0.2
 - 优化启动速度，提升约 4 ~ 5 倍；

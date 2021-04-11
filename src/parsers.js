@@ -101,15 +101,18 @@ function vscodeParsers(fileName, deDuplication) {
     }
 
     data = JSON.parse(data)
-    const openedPathsList = data["openedPathsList"]
-    const projects = openedPathsList["workspaces3"].concat(openedPathsList["files2"]) // 需清除掉 file://
+    const projects = data["openedPathsList"]["entries"]     // 需清除掉 file://
 
     let projectList = []
     const ideName = "vscode"
     const executableFile = getExecutableFile(ideName)
     const icon = getIcon(ideName)
     for (let i = 0; i < projects.length; i++) {
-        const item = projects[i].replace("file://", "")
+        let item = projects[i]["folderUri"]  // 目录
+        if (item === undefined) {
+            item = projects[i]["fileUri"]    // 文件
+        }
+        item = item.replace("file://", "")
         const mark = ideName + item
         if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
             deDuplication.push(mark)
