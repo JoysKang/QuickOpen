@@ -1,6 +1,5 @@
 // home
-// const home = utools.getPath("home")
-const home = "/Users/joys"
+const home = process.env.HOME
 
 
 // 配置
