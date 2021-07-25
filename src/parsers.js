@@ -17,6 +17,10 @@ function getJetBrainsIdeName(fileName) {
     return ideName
 }
 
+function getVscodeProjectPath(project) {
+    return project?.folderUri || project?.fileUri || project?.workspace?.configPath
+}
+
 
 // 获取可执行文件的绝对路径
 function getExecutableFile(key) {
@@ -108,9 +112,9 @@ function vscodeParsers(fileName, deDuplication) {
     const executableFile = getExecutableFile(ideName)
     const icon = getIcon(ideName)
     for (let i = 0; i < projects.length; i++) {
-        let item = projects[i]["folderUri"]  // 目录
-        if (item === undefined) {
-            item = projects[i]["fileUri"]    // 文件
+        let item = getVscodeProjectPath(projects[i])
+        if (typeof item !== 'string') {
+            continue
         }
         item = item.replace("file://", "")
         const mark = ideName + item
