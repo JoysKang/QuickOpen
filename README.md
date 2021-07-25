@@ -32,6 +32,9 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 
 ### 更新日志
 
+v0.0.6
+- 修复 获取 vscode 项目的路径(感谢 [YingXin-Zheng](https://github.com/undermoodzyx) 的贡献);
+
 v0.0.5
 - 修复home的bug，改用 node 主动获取；
 
