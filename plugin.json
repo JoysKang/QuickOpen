@@ -16,6 +16,13 @@
       "cmds": [
         "History"
       ]
+    },
+    {
+      "code": "Clear",
+      "explain": "清除已不存在的项目记录",
+      "cmds": [
+        "Clear"
+      ]
     }
   ]
 }

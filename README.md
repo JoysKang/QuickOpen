@@ -15,7 +15,7 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
    ![](https://joys.oss-cn-shanghai.aliyuncs.com/mark_images/WechatIMG297.png)
 2. 现支持JetBrains、vscode、AndroidStudio、sublime；
 3. 搜索栏中通过:pycharm、:webstorm等关键字直接搜索相对应IDE的历史记录；
-4. 如果项目已不存在，已在搜索结果中标记出"路径不存在"提示；
+4. 如果项目已不存在，已在搜索结果中标记出"路径不存在"提示，可用 clear 关键字启动删除(慎用，直接修改了历史记录文件)；
 5. 搜索结果优先显示项目名称显示的结果；
 
 ### Todo
@@ -31,6 +31,9 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 - [x] 搜索栏中通过:pycharm、:webstorm等关键字直接搜索相对应IDE的历史记录
 
 ### 更新日志
+v0.0.7
+- sublime 添加单文件支持；
+- 增减 Clear 指令，用来删除历史项目中已不存在的项目(慎用，直接修改了历史记录文件);
 
 v0.0.6
 - 修复 获取 vscode 项目的路径(感谢 [YingXin-Zheng](https://github.com/undermoodzyx) 的贡献);

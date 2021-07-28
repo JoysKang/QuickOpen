@@ -197,11 +197,27 @@ let History = {
 };
 
 
+let Clear = {
+    mode: "none",
+    args: {
+        // 进入插件时调用
+        enter: async (action) => {
+            await getHistory();
+            parsers.clearNotExist(allHistory)
+            utools.showNotification('Clean-up complete!')
+            utools.outPlugin();     // 关闭插件
+            utools.hideMainWindow();    // 隐藏 uTools 窗口
+        }
+    }
+};
+
+
 /**
  * 导出
  */
 window.exports = {
-    History
+    History,
+    Clear
 };
 
 // (async () => {
