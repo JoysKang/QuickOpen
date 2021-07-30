@@ -173,77 +173,8 @@ function sublimeParsers(fileName, deDuplication) {
 }
 
 
-let builder = new xml2js.Builder();
-// 清除不存在的项目
-function clearNotExist(projectList) {
-    if (!projectList.length) {
-        return
-    }
-
-    for (let i = 0; i < projectList.length; i++) {
-        const project = projectList[i]
-        if (project.description !== "项目路径已不存在") {
-            continue
-        }
-
-        const fileName = projectList[i].fileName
-        const projectPath = project.item
-        let data = ""
-        // xml 清理(JetBrains & studio)
-        if (fileName.indexOf('xml') !== -1 && fileName.indexOf('PyCharm') !== -1) {
-            data = fs.readFileSync(fileName)
-            parser.parseString(data, function (err, result) {
-                const component = result.application.component[0];
-                const option =
-                    component.option[
-                        component.option.findIndex((item) => item.$.name == "additionalInfo") // 获取 name="additionalInfo" 的 option 元素
-                        ];
-
-                const index = option.map[0].entry.findIndex((element, index) => {
-                    if (element.$.key === projectPath) {
-                        return true
-                    }
-                })
-                option.map[0].entry.splice(index, 1)   // 删除
-
-                //输出xml
-                data = builder.buildObject(result);
-                data = data.toString();
-            });
-
-        // json 清理(vscode)
-        } else if (fileName.indexOf('storage.json') !== -1) {
-            data = fs.readFileSync(fileName, 'utf-8')
-            data = JSON.parse(data)
-            const index = data.openedPathsList.entries.findIndex((element, index) => {
-                if (element.fileUri === "file://" + projectPath) {
-                    return true
-                }
-            })
-            data.openedPathsList.entries.splice(index, 1)   // 删除
-            data = JSON.stringify(data, null, 4)
-        // json 清理(sublime)
-        } else if (fileName.indexOf('sublime_session') !== -1) {
-            data = fs.readFileSync(fileName, 'utf-8')
-            data = data.replaceAll('"' + projectPath + '"', '')
-        }
-
-        if (data && !data.length) {
-            continue
-        }
-        // 写入删除过后的数据
-        fs.writeFile(fileName, data, 'utf-8', (err) => {
-            if (err) {
-                throw err;
-            }
-        })
-    }
-}
-
-
 module.exports = {
     jetBrainsParsers,
     vscodeParsers,
-    sublimeParsers,
-    clearNotExist
+    sublimeParsers
 };

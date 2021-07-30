@@ -24,7 +24,7 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 - [x] JetBrains多版本问题
 - [x] 打开速度优化
 - [ ] Xcode 兼容(暂时不知道Xcode历史项目的记录位置，暂时放放)
-- [x] vscode 兼容
+- [x] vscode 兼容(1.58.2及其以上)
 - [x] sublime 兼容
 - [x] AndroidStudio 兼容
 - [x] 如果项目已不存在，直接从搜索结果中~~移除~~标记出路径不存在
@@ -33,7 +33,6 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 ### 更新日志
 v0.0.7
 - sublime 添加单文件支持；
-- 增减 Clear 指令，用来删除历史项目中已不存在的项目(慎用，直接修改了历史记录文件);
 
 v0.0.6
 - 修复 获取 vscode 项目的路径(感谢 [YingXin-Zheng](https://github.com/undermoodzyx) 的贡献);
