@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const xml2js = require('xml2js')
 const config = require('./config')
+const xcode = require('./getXcodeHistory')
 
 const ideNames = Object.keys(config.executableFile)
 
@@ -50,7 +51,7 @@ let parser = new xml2js.Parser();
 
 function jetBrainsParsers(fileName, deDuplication) {
     if (fileName.indexOf('xml') === -1) {
-        return []
+        return [];
     }
 
     let projectList = []
@@ -88,9 +89,7 @@ function jetBrainsParsers(fileName, deDuplication) {
                         executableFile: executableFile,
                         description: checkPath(projectPath) ? projectPath : "项目路径已不存在",
                         openTimestamp: options[options.findIndex((item) => item.$.name == "projectOpenTimestamp")].$.value, // 获取 name="projectOpenTimestamp" 的 option 元素的 value 值
-                        title: path.basename(projectPath),
-                        fileName: fileName,
-                        item: item.$.key
+                        title: path.basename(projectPath)
                     });
                 }
             }
@@ -104,7 +103,7 @@ function jetBrainsParsers(fileName, deDuplication) {
 function vscodeParsers(fileName, deDuplication) {
     let data = fs.readFileSync(fileName)
     if (!data.length) {
-        return
+        return [];
     }
 
     data = JSON.parse(data)
@@ -129,9 +128,7 @@ function vscodeParsers(fileName, deDuplication) {
                 executableFile: executableFile,
                 description: checkPath(item) ? item : "项目路径已不存在",
                 openTimestamp: 0,
-                title: path.basename(item),
-                fileName: fileName,
-                item: item
+                title: path.basename(item)
             });
         }
     }
@@ -142,7 +139,7 @@ function vscodeParsers(fileName, deDuplication) {
 function sublimeParsers(fileName, deDuplication) {
     let data = fs.readFileSync(fileName)
     if (!data.length) {
-        return
+        return [];
     }
 
     data = JSON.parse(data)
@@ -163,9 +160,36 @@ function sublimeParsers(fileName, deDuplication) {
                 executableFile: executableFile,
                 description: checkPath(item) ? item : "项目路径已不存在",
                 openTimestamp: 0,
-                title: path.basename(item),
-                fileName: fileName,
-                item: item
+                title: path.basename(item)
+            });
+        }
+    }
+    return projectList;
+}
+
+
+function xcodeParsers(deDuplication) {
+    const data = xcode.getXcodeHistory()
+    if (!data.length) {
+        return [];
+    }
+
+    let projectList = []
+    const ideName = "xcode"
+    const executableFile = getExecutableFile(ideName)
+    const icon = getIcon(ideName)
+    for (let i = 0; i < data.length; i++) {
+        const item = data[i].replace("file://", "").replaceAll("%20", "\ ")
+        const mark = ideName + item
+        if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
+            deDuplication.push(mark)
+            projectList.push({
+                ideName: ideName,
+                icon: icon,
+                executableFile: executableFile,
+                description: checkPath(item) ? item : "项目路径已不存在",
+                openTimestamp: 0,
+                title: path.basename(item)
             });
         }
     }
@@ -176,5 +200,6 @@ function sublimeParsers(fileName, deDuplication) {
 module.exports = {
     jetBrainsParsers,
     vscodeParsers,
-    sublimeParsers
+    sublimeParsers,
+    xcodeParsers
 };

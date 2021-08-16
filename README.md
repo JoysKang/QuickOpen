@@ -23,12 +23,19 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 - [x] 完善JetBrains软件配置
 - [x] JetBrains多版本问题
 - [x] 打开速度优化
-- [ ] Xcode 兼容(暂时不知道Xcode历史项目的记录位置，暂时放放)
+- [x] Xcode 兼容
 - [x] vscode 兼容(1.58.2及其以上)
 - [x] sublime 兼容
 - [x] AndroidStudio 兼容
 - [x] 如果项目已不存在，直接从搜索结果中~~移除~~标记出路径不存在
 - [x] 搜索栏中通过:pycharm、:webstorm等关键字直接搜索相对应IDE的历史记录
+- [ ] 添加完 Xcode 后，因为执行二进制文件速度慢，导致应用启动时间从 30ms 增加到 500~600ms，需优化；
+
+### 注意事项
+
+1. objc 依赖的 node 依赖于 8<node<12, 这里使用的是 node 10，所以 readXcode.js 只有在 node 10.0.0 下执行的js脚本，使用了 objc 库 才能正常使用。
+2. 为了能够在高版本使用 readXcode，使用 nexe 在 node 10 环境下，生成了 readXcode 可执行文件；
+3. 这里 readXcode 执行需要用到 node_moudules 下的依赖，所以安装依赖时，需要切换到 node 10；
 
 ### 更新日志
 v0.0.7

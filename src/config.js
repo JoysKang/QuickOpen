@@ -4,6 +4,7 @@ const home = process.env.HOME
 
 // 配置
 const ideHistory = [
+    "xcode",    // 这里只是一个标识，不是文件，真是文件通过readXcode读取
     // 文件夹多添加一个 \ 是防止下边字符串拼接时被转义
     "/Library/Application\ Support/JetBrains/",
     "/Library/Application\ Support/Code/storage.json",
@@ -26,7 +27,8 @@ const executableFile = {
     "webstorm": "/Applications/WebStorm.app/Contents/MacOS/webstorm",
     "vscode": "/Applications/Visual\ Studio\ Code.app/Contents/MacOS/Electron",
     "sublime": "/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl",
-    "studio": "/Applications/Android\ Studio.app/Contents/MacOS/studio"
+    "studio": "/Applications/Android\ Studio.app/Contents/MacOS/studio",
+    "xcode": "/Applications/Xcode.app/Contents/MacOS/Xcode"
 }
 
 
@@ -45,6 +47,7 @@ icons = {
     "vscode": "icons/Visual Studio Code.png",
     "sublime": "icons/sublime-text.png",
     "studio": "icons/studio.png",
+    "xcode": "icons/Xcode.png"
 }
 
 

@@ -50,6 +50,11 @@ function readFileList(path, filesList) {
 
 // 查找项目历史文件
 function serarchFiles(element) {
+    // xcode
+    if (element.indexOf("xcode") !== -1) {
+        return [element]
+    }
+
     // JetBrains 中 Rider 使用的是 recentSolutions.xml 其他 IDE 使用的是 recentProjects.xml
     // 判断是文件还是文件夹
     if (element[element.length - 1] !== "/") {    // 文件
@@ -73,6 +78,8 @@ function getFileContent(element) {
         return parsers.vscodeParsers(element, deDuplication)
     } else if (element.indexOf("sublime_session") !== -1) {   // sublime
         return parsers.sublimeParsers(element, deDuplication)
+    } else if (element.indexOf("xcode") !== -1) {   // xcode
+        return parsers.xcodeParsers(deDuplication)
     }
 }
 
