@@ -9,6 +9,13 @@
 本项目地址：[https://github.com/JoysKang/QuickOpen](https://github.com/JoysKang/QuickOpen)  
 uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/master/utools-jetbrains-history](https://github.com/marsvet/uTools-plugins/tree/master/utools-jetbrains-history)
 
+### 缺点
+1. 只支持 Mac；
+2. 如果你经常使用 Xcode 开发，会发现启动的时间会稍长，约 600ms 左右；
+
+### 感谢
+这里能够添加 Xcode 的支持，少不了 [dacaiguoguo](https://github.com/dacaiguoguo) 大佬的帮助，这里特地列出来表示感谢
+
 ### 食用
 
 1. 安装后直接使用关键字 history 即可唤醒插件；
@@ -29,7 +36,6 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 - [x] AndroidStudio 兼容
 - [x] 如果项目已不存在，直接从搜索结果中~~移除~~标记出路径不存在
 - [x] 搜索栏中通过:pycharm、:webstorm等关键字直接搜索相对应IDE的历史记录
-- [ ] 添加完 Xcode 后，因为执行二进制文件速度慢，导致应用启动时间从 30ms 增加到 500~600ms，需优化；
 
 ### 注意事项
 
@@ -38,6 +44,9 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 3. 这里 readXcode 执行需要用到 node_moudules 下的依赖，所以安装依赖时，需要切换到 node 10；
 
 ### 更新日志
+v1.0.0
+- 添加 Xcode 支持；
+
 v0.0.7
 - sublime 添加单文件支持；
 
