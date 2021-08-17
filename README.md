@@ -2,7 +2,7 @@
 
 ### 简介
 
-使用 uTools 工具快速打开历史项目, 支持 JetBrains、vscode、sublime、AndroidStudio, 后续会添加 Xcode的支持
+使用 uTools 工具快速打开历史项目, 支持 JetBrains、vscode、sublime、AndroidStudio、 Xcode。
 
 该项目仅支持 macOS，暂不考虑支持Linux、window系统，如果你有需要可以使用[uTools-plugins](https://github.com/marsvet/uTools-plugins/tree/master/utools-jetbrains-history), 本项目就是参考该项目进行开发的
 
@@ -14,7 +14,7 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 2. 如果你经常使用 Xcode 开发，会发现启动的时间会稍长，约 600ms 左右；
 
 ### 感谢
-这里能够添加 Xcode 的支持，少不了 [dacaiguoguo](https://github.com/dacaiguoguo) 大佬的帮助，这里特地列出来表示感谢
+这里能够添加 Xcode 的支持，少不了 [dacaiguoguo](https://github.com/dacaiguoguo) 大佬的帮助，这里特地列出来表示感谢。
 
 ### 食用
 
@@ -42,6 +42,7 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
 1. objc 依赖的 node 依赖于 8<node<12, 这里使用的是 node 10，所以 readXcode.js 只有在 node 10.0.0 下执行的js脚本，使用了 objc 库 才能正常使用。
 2. 为了能够在高版本使用 readXcode，使用 nexe 在 node 10 环境下，生成了 readXcode 可执行文件；
 3. 这里 readXcode 执行需要用到 node_moudules 下的依赖，所以安装依赖时，需要切换到 node 10；
+4. 所有生成二进制文件的代码都在分支 binary;
 
 ### 更新日志
 v1.0.0
