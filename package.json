@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "xml2js": "^0.4.23",
     "nexe": "^4.0.0-beta.18",
     "objc": "^0.20.0"
   }
