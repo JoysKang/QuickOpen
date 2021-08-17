@@ -9,7 +9,12 @@ function getXcodeHistory() {
     // utools.dbStorage.removeItem("stdout")
 
     // 先加权限
-    let readXCodePath = path.join(__dirname.replace(/([a-f0-9]{32}.asar)/, "$1.unpacked"), "/readXcode").replaceAll("'", '"')
+    const readXCodePath = config.home.concat("/Library/Application Support/uTools/plugins/readXcode/src/readXcode")
+    try {
+        fs.statSync(readXCodePath)   // 存在二进制文件
+    } catch (e) {
+        return [];  // 不存在
+    }
     fs.access(readXCodePath, fs.constants.X_OK, err => {
         if (err) fs.chmodSync(readXCodePath, 0o755)
     })
