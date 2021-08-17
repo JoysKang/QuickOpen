@@ -1,7 +1,6 @@
 const { execFileSync } = require('child_process');
 const config = require('./config')
 const fs = require('fs')
-const path = require('path');
 
 
 function getXcodeHistory() {
