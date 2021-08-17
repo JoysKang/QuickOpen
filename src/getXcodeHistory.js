@@ -1,9 +1,19 @@
 const { execFileSync } = require('child_process');
 const config = require('./config')
 const fs = require('fs')
+const path = require('path');
 
 
 function getXcodeHistory() {
+    // utools.dbStorage.removeItem("lastTime")
+    // utools.dbStorage.removeItem("stdout")
+
+    // 先加权限
+    let readXCodePath = path.join(__dirname.replace(/([a-f0-9]{32}.asar)/, "$1.unpacked"), "/readXcode").replaceAll("'", '"')
+    fs.access(readXCodePath, fs.constants.X_OK, err => {
+        if (err) fs.chmodSync(readXCodePath, 0o755)
+    })
+
     // 判断 com.apple.dt.xcode.sfl2 文件是否存在
     let filePath = "/Library/Application\ Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.ApplicationRecentDocuments/com.apple.dt.xcode.sfl2"
     filePath = config.home.concat(filePath)
@@ -20,8 +30,15 @@ function getXcodeHistory() {
         return [];
     }
 
-    const cmd = __dirname + '/readXcode'
-    let stdout = execFileSync(cmd);
+    let stdout = "[]"
+    try {
+        stdout = execFileSync(readXCodePath)
+    } catch (e) {
+        utools.showNotification(e.toString())
+        utools.showNotification(e.toString().slice(-100))
+        return [];
+    }
+
     stdout = JSON.parse(stdout.toString().replaceAll("'", '"'))
     utools.dbStorage.setItem("stdout", stdout)
     // console.log(stdout)
