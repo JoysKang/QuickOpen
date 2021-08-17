@@ -7,7 +7,8 @@
 该项目仅支持 macOS，暂不考虑支持Linux、window系统，如果你有需要可以使用[uTools-plugins](https://github.com/marsvet/uTools-plugins/tree/master/utools-jetbrains-history), 本项目就是参考该项目进行开发的
 
 本项目地址：[https://github.com/JoysKang/QuickOpen](https://github.com/JoysKang/QuickOpen)  
-uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/master/utools-jetbrains-history](https://github.com/marsvet/uTools-plugins/tree/master/utools-jetbrains-history)
+uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/master/utools-jetbrains-history](https://github.com/marsvet/uTools-plugins/tree/master/utools-jetbrains-history)  
+uTools帖子地址：[QuickOpen](https://yuanliao.info/d/4072-quickopen-xcode)
 
 ### 缺点
 1. 只支持 Mac；
@@ -22,7 +23,7 @@ uTools-plugins项目地址：[https://github.com/marsvet/uTools-plugins/tree/mas
    ![](https://joys.oss-cn-shanghai.aliyuncs.com/mark_images/WechatIMG297.png)
 2. 现支持JetBrains、vscode、AndroidStudio、sublime；
 3. 搜索栏中通过:pycharm、:webstorm等关键字直接搜索相对应IDE的历史记录；
-4. 如果项目已不存在，已在搜索结果中标记出"路径不存在"提示，可用 clear 关键字启动删除(慎用，直接修改了历史记录文件)；
+4. 如果项目已不存在，已在搜索结果中标记出"路径不存在"提示；
 5. 搜索结果优先显示项目名称显示的结果；
 
 ### Todo
