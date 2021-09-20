@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const xml2js = require('xml2js')
 const config = require('./config')
-const xcode = require('./getXcodeHistory')
+const xcode = require('./readXcodeHistory')
 
 const ideNames = Object.keys(config.executableFile)
 
@@ -169,7 +169,9 @@ function sublimeParsers(fileName, deDuplication) {
 
 
 function xcodeParsers(deDuplication) {
-    const data = xcode.getXcodeHistory()
+    // console.time('start')
+    const data = xcode.readXcodeHistory()
+    // console.timeEnd('start')
     if (!data.length) {
         return [];
     }
@@ -179,7 +181,7 @@ function xcodeParsers(deDuplication) {
     const executableFile = getExecutableFile(ideName)
     const icon = getIcon(ideName)
     for (let i = 0; i < data.length; i++) {
-        const item = data[i].replace("file://", "").replaceAll("%20", "\ ")
+        const item = data[i]
         const mark = ideName + item
         if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
             deDuplication.push(mark)

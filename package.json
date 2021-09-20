@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "licia": "^1.31.0",
     "xml2js": "^0.4.23"
   }
 }
