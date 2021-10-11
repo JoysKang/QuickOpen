@@ -21,8 +21,11 @@ uTools帖子地址：[QuickOpen](https://yuanliao.info/d/4072-quickopen-xcode)
 
 1. 安装后直接使用关键字 history 即可唤醒插件；
    ![](https://joys.oss-cn-shanghai.aliyuncs.com/mark_images/WechatIMG297.png)
+   ![](images/history.png)
 2. 现支持JetBrains、vscode、AndroidStudio、sublime；
 3. 搜索栏中通过:pycharm、:webstorm等关键字直接搜索相对应IDE的历史记录；
+   ![](images/ws.png)
+   ![](images/Xcode.png)
 4. 如果项目已不存在，已在搜索结果中标记出"路径不存在"提示；
 5. 搜索结果优先显示项目名称显示的结果；
 
