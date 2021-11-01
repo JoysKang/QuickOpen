@@ -73,25 +73,14 @@ function jetBrainsParsers(fileName, deDuplication) {
             if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
                 const options = item.value[0].RecentProjectMetaInfo[0].option;
                 deDuplication.push(mark)
-                if (ideName === "datagrip") {
-                    projectList.push({
-                        ideName: ideName,
-                        icon: icon,
-                        executableFile: executableFile,
-                        description: "datagrip 没有历史项目",
-                        openTimestamp: options[options.findIndex((item) => item.$.name == "projectOpenTimestamp")].$.value, // 获取 name="projectOpenTimestamp" 的 option 元素的 value 值
-                        title: "打开 datagrip"
-                    });
-                } else {
-                    projectList.push({
-                        ideName: ideName,
-                        icon: icon,
-                        executableFile: executableFile,
-                        description: checkPath(projectPath) ? projectPath : "项目路径已不存在",
-                        openTimestamp: options[options.findIndex((item) => item.$.name == "projectOpenTimestamp")].$.value, // 获取 name="projectOpenTimestamp" 的 option 元素的 value 值
-                        title: path.basename(projectPath)
-                    });
-                }
+                projectList.push({
+                    ideName: ideName,
+                    icon: icon,
+                    executableFile: executableFile,
+                    description: checkPath(projectPath) ? projectPath : "项目路径已不存在",
+                    openTimestamp: options[options.findIndex((item) => item.$.name == "projectOpenTimestamp")].$.value, // 获取 name="projectOpenTimestamp" 的 option 元素的 value 值
+                    title: path.basename(projectPath)
+                });
             }
         }
     });
