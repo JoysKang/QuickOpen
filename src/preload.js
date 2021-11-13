@@ -9,7 +9,6 @@ const config = require('./config');
  *******************/
 let recentProjects = [];
 let allHistory = [];
-let deDuplication = []; // 过滤重复
 let ideNames = Object.keys(config.icons)
 
 
@@ -73,13 +72,13 @@ function serarchFiles(element) {
 function getFileContent(element) {
     if (element.indexOf("AndroidStudio") !== -1 ||
         element.indexOf("JetBrains") !== -1) {// JetBrains、androidstudio
-        return parsers.jetBrainsParsers(element, deDuplication)
+        return parsers.jetBrainsParsers(element)
     } else if (element.indexOf("Code/storage.json") !== -1) {   // vscode
-        return parsers.vscodeParsers(element, deDuplication)
+        return parsers.vscodeParsers(element)
     } else if (element.indexOf("sublime_session") !== -1) {   // sublime
-        return parsers.sublimeParsers(element, deDuplication)
+        return parsers.sublimeParsers(element)
     } else if (element.indexOf("xcode") !== -1) {   // xcode
-        return parsers.xcodeParsers(deDuplication)
+        return parsers.xcodeParsers()
     }
 }
 
@@ -125,13 +124,29 @@ let asyncFileHistoryIterable = {
 
 
 async function getHistory() {
+    let allRecentProjects = []
+    let ides = new Set()
     recentProjects = []
     allHistory = []
-    deDuplication = []
 
     // 遍历目录下获取所有的 recentProjects.xml 文件
     for await (element of asyncHistoryIterable) {
-        recentProjects.push(...element)
+        allRecentProjects.push(...element)
+    }
+
+    // 先排序，后遍历，排除重复
+    allRecentProjects.sort();
+    allRecentProjects.reverse();
+    for (let i = 0; i < allRecentProjects.length; i++) {
+        if (allRecentProjects[i].indexOf("JetBrains/") !== -1) {
+            const ideStr = allRecentProjects[i].split("JetBrains/")[1].substring(0, 4)
+            if (!ides.has(ideStr)) {
+                recentProjects.push(allRecentProjects[i])
+                ides.add(ideStr)
+            }
+        } else {
+            recentProjects.push(allRecentProjects[i])
+        }
     }
 
     // 读取所有的文件的配置
@@ -148,9 +163,9 @@ let History = {
     mode: "list",
     args: {
         enter: async (action, callbackSetList) => {
-            // console.time('start')
+            console.time('start')
             await getHistory();
-            // console.timeEnd('start')
+            console.timeEnd('start')
             callbackSetList(allHistory);
         },
 

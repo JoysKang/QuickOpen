@@ -49,7 +49,7 @@ function checkPath(path) {
 
 let parser = new xml2js.Parser();
 
-function jetBrainsParsers(fileName, deDuplication) {
+function jetBrainsParsers(fileName) {
     if (fileName.indexOf('xml') === -1) {
         return [];
     }
@@ -69,19 +69,15 @@ function jetBrainsParsers(fileName, deDuplication) {
         for (let i = 0; i < option.map[0].entry.length; i++) {
             const item = option.map[0].entry[i]
             const projectPath = item.$.key.replace("$USER_HOME$", config.home)   // "$USER_HOME$" 得替换成用户的家目录
-            const mark = ideName + projectPath
-            if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
-                const options = item.value[0].RecentProjectMetaInfo[0].option;
-                deDuplication.push(mark)
-                projectList.push({
-                    ideName: ideName,
-                    icon: icon,
-                    executableFile: executableFile,
-                    description: checkPath(projectPath) ? projectPath : "项目路径已不存在",
-                    openTimestamp: options[options.findIndex((item) => item.$.name == "projectOpenTimestamp")].$.value, // 获取 name="projectOpenTimestamp" 的 option 元素的 value 值
-                    title: path.basename(projectPath)
-                });
-            }
+            const options = item.value[0].RecentProjectMetaInfo[0].option;
+            projectList.push({
+                ideName: ideName,
+                icon: icon,
+                executableFile: executableFile,
+                description: checkPath(projectPath) ? projectPath : "项目路径已不存在",
+                openTimestamp: options[options.findIndex((item) => item.$.name == "projectOpenTimestamp")].$.value, // 获取 name="projectOpenTimestamp" 的 option 元素的 value 值
+                title: path.basename(projectPath)
+            });
         }
     });
     // console.log(projectList)
@@ -89,7 +85,7 @@ function jetBrainsParsers(fileName, deDuplication) {
 }
 
 
-function vscodeParsers(fileName, deDuplication) {
+function vscodeParsers(fileName) {
     let data = fs.readFileSync(fileName)
     if (!data.length) {
         return [];
@@ -108,24 +104,20 @@ function vscodeParsers(fileName, deDuplication) {
             continue
         }
         item = item.replace("file://", "")
-        const mark = ideName + item
-        if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
-            deDuplication.push(mark)
-            projectList.push({
-                ideName: ideName,
-                icon: icon,
-                executableFile: executableFile,
-                description: checkPath(item) ? item : "项目路径已不存在",
-                openTimestamp: 0,
-                title: path.basename(item)
-            });
-        }
+        projectList.push({
+            ideName: ideName,
+            icon: icon,
+            executableFile: executableFile,
+            description: checkPath(item) ? item : "项目路径已不存在",
+            openTimestamp: 0,
+            title: path.basename(item)
+        });
     }
     return projectList;
 }
 
 
-function sublimeParsers(fileName, deDuplication) {
+function sublimeParsers(fileName) {
     let data = fs.readFileSync(fileName)
     if (!data.length) {
         return [];
@@ -140,24 +132,20 @@ function sublimeParsers(fileName, deDuplication) {
     const icon = getIcon(ideName)
     for (let i = 0; i < projects.length; i++) {
         const item = projects[i]
-        const mark = ideName + item
-        if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
-            deDuplication.push(mark)
-            projectList.push({
-                ideName: ideName,
-                icon: icon,
-                executableFile: executableFile,
-                description: checkPath(item) ? item : "项目路径已不存在",
-                openTimestamp: 0,
-                title: path.basename(item)
-            });
-        }
+        projectList.push({
+            ideName: ideName,
+            icon: icon,
+            executableFile: executableFile,
+            description: checkPath(item) ? item : "项目路径已不存在",
+            openTimestamp: 0,
+            title: path.basename(item)
+        });
     }
     return projectList;
 }
 
 
-function xcodeParsers(deDuplication) {
+function xcodeParsers() {
     // console.time('start')
     const data = xcode.readXcodeHistory()
     // console.timeEnd('start')
@@ -171,18 +159,14 @@ function xcodeParsers(deDuplication) {
     const icon = getIcon(ideName)
     for (let i = 0; i < data.length; i++) {
         const item = data[i]
-        const mark = ideName + item
-        if (deDuplication.indexOf(mark) === -1) {   // 过滤重复的记录
-            deDuplication.push(mark)
-            projectList.push({
-                ideName: ideName,
-                icon: icon,
-                executableFile: executableFile,
-                description: checkPath(item) ? item : "项目路径已不存在",
-                openTimestamp: 0,
-                title: path.basename(item)
-            });
-        }
+        projectList.push({
+            ideName: ideName,
+            icon: icon,
+            executableFile: executableFile,
+            description: checkPath(item) ? item : "项目路径已不存在",
+            openTimestamp: 0,
+            title: path.basename(item)
+        });
     }
     return projectList;
 }
