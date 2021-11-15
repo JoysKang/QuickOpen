@@ -3,6 +3,13 @@ const {isEmpty, isNil} = require('licia');
 const config = require("./config");
 const fs = require('fs')
 
+let ready = false;
+
+utools.onPluginReady(() => {
+    console.log('插件装配完成，已准备好')
+    ready = true;
+})
+
 
 function generateScript(configPath) {
     return `osascript -e "use framework \\"Foundation\\"
@@ -38,6 +45,13 @@ function readXcodeHistory() {
 
     try {
         const stat = fs.statSync(configPath)
+        if (!ready) {
+            console.log("0000000")
+            setTimeout(() => {
+                readXcodeHistory()
+            }, 100)
+            return
+        }
         const lastTime = utools.dbStorage.getItem("lastTime")
         // 不常使用，使用数据库记录(缓存)
         if (stat && stat.mtimeMs === lastTime) {
