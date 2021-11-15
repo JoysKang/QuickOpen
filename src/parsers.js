@@ -58,7 +58,17 @@ function jetBrainsParsers(fileName) {
     const ideName = getJetBrainsIdeName(fileName)
     const executableFile = getExecutableFile(ideName)
     const icon = getIcon(ideName)
-    const data = fs.readFileSync(fileName)
+    let data = {}
+    try {
+        data = fs.readFileSync(fileName)
+    } catch (err) {
+        console.log(err)
+        return [];
+    }
+
+    if (!data.length) {
+        return [];
+    }
     parser.parseString(data, function (err, result) {
         const component = result.application.component[0];
         const option =
@@ -86,7 +96,14 @@ function jetBrainsParsers(fileName) {
 
 
 function vscodeParsers(fileName) {
-    let data = fs.readFileSync(fileName)
+    let data = {}
+    try {
+        data = fs.readFileSync(fileName)
+    } catch (err) {
+        console.log(err)
+        return [];
+    }
+
     if (!data.length) {
         return [];
     }
@@ -118,7 +135,14 @@ function vscodeParsers(fileName) {
 
 
 function sublimeParsers(fileName) {
-    let data = fs.readFileSync(fileName)
+    let data = {}
+    try {
+        data = fs.readFileSync(fileName)
+    } catch (err) {
+        console.log(err)
+        return [];
+    }
+
     if (!data.length) {
         return [];
     }
