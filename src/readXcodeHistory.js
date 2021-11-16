@@ -3,13 +3,6 @@ const {isEmpty, isNil} = require('licia');
 const config = require("./config");
 const fs = require('fs')
 
-let ready = false;
-
-utools.onPluginReady(() => {
-    console.log('插件装配完成，已准备好')
-    ready = true;
-})
-
 
 function generateScript(configPath) {
     return `osascript -e "use framework \\"Foundation\\"
@@ -43,25 +36,13 @@ function readXcodeHistory() {
     let configPath = "/Library/Application\ Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.ApplicationRecentDocuments/com.apple.dt.xcode.sfl2"
     configPath = config.home.concat(configPath)
 
-    try {
-        const stat = fs.statSync(configPath)
-        if (!ready) {
-            console.log("0000000")
-            setTimeout(() => {
-                readXcodeHistory()
-            }, 100)
-            return
-        }
-        const lastTime = utools.dbStorage.getItem("lastTime")
-        // 不常使用，使用数据库记录(缓存)
-        if (stat && stat.mtimeMs === lastTime) {
-            return utools.dbStorage.getItem("stdout")
-        } else {
-            utools.dbStorage.setItem("lastTime", stat.mtimeMs)
-        }
-    } catch (e) {   // 不使用 xcode 直接跳过
-        console.log(e)
-        return [];
+    const stat = fs.statSync(configPath)
+    const lastTime = utools.dbStorage.getItem("lastTime")
+    // 不常使用，使用数据库记录(缓存)
+    if (stat && stat.mtimeMs === lastTime) {
+        return utools.dbStorage.getItem("stdout")
+    } else {
+        utools.dbStorage.setItem("lastTime", stat.mtimeMs)
     }
 
     let result = execSync(generateScript(configPath), {encoding: 'utf-8'})

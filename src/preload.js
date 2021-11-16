@@ -70,16 +70,21 @@ function serarchFiles(element) {
 
 // 读取项目历史文件
 function getFileContent(element) {
-    if (element.indexOf("AndroidStudio") !== -1 ||
-        element.indexOf("JetBrains") !== -1) {// JetBrains、androidstudio
-        return parsers.jetBrainsParsers(element)
-    } else if (element.indexOf("Code/storage.json") !== -1) {   // vscode
-        return parsers.vscodeParsers(element)
-    } else if (element.indexOf("sublime_session") !== -1) {   // sublime
-        return parsers.sublimeParsers(element)
-    } else if (element.indexOf("xcode") !== -1) {   // xcode
-        return parsers.xcodeParsers()
+    try {
+        if (element.indexOf("AndroidStudio") !== -1 ||
+            element.indexOf("JetBrains") !== -1) {// JetBrains、androidstudio
+            return parsers.jetBrainsParsers(element)
+        } else if (element.indexOf("Code/storage.json") !== -1) {   // vscode
+            return parsers.vscodeParsers(element)
+        } else if (element.indexOf("sublime_session") !== -1) {   // sublime
+            return parsers.sublimeParsers(element)
+        } else if (element.indexOf("xcode") !== -1) {   // xcode
+            return parsers.xcodeParsers()
+        }
+    } catch (e) {
+        console.log(e)
     }
+
 }
 
 

@@ -54,18 +54,15 @@ function jetBrainsParsers(fileName) {
         return [];
     }
 
+    if (!checkPath(fileName)) {
+        return []
+    }
+
     let projectList = []
     const ideName = getJetBrainsIdeName(fileName)
     const executableFile = getExecutableFile(ideName)
     const icon = getIcon(ideName)
-    let data = {}
-    try {
-        data = fs.readFileSync(fileName)
-    } catch (err) {
-        console.log(err)
-        return [];
-    }
-
+    const data = fs.readFileSync(fileName)
     if (!data.length) {
         return [];
     }
@@ -96,14 +93,10 @@ function jetBrainsParsers(fileName) {
 
 
 function vscodeParsers(fileName) {
-    let data = {}
-    try {
-        data = fs.readFileSync(fileName)
-    } catch (err) {
-        console.log(err)
-        return [];
+    if (!checkPath(fileName)) {
+        return []
     }
-
+    let data = fs.readFileSync(fileName)
     if (!data.length) {
         return [];
     }
@@ -135,14 +128,11 @@ function vscodeParsers(fileName) {
 
 
 function sublimeParsers(fileName) {
-    let data = {}
-    try {
-        data = fs.readFileSync(fileName)
-    } catch (err) {
-        console.log(err)
-        return [];
+    if (!checkPath(fileName)) {
+        return []
     }
 
+    let data = fs.readFileSync(fileName)
     if (!data.length) {
         return [];
     }
