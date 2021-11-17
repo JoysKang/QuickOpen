@@ -17,29 +17,31 @@ function readFileList(path, filesList) {
     let files = fs.readdirSync(path);
     files.forEach(function (itm) {
         let stat = fs.lstatSync(path + itm);
-        const absolute_path = path + itm
+        const absolutePath = path + itm
         if (stat.isDirectory()) {
 
             // 过滤 AndroidStudiox.x 下的非 options 目录
-            if (absolute_path.indexOf("Google") !== -1 &&
-                absolute_path.indexOf("AndroidStudio") === -1 &&
-                absolute_path.indexOf("options") === -1) {
+            if (absolutePath.indexOf("Google") !== -1 &&
+                absolutePath.indexOf("AndroidStudio") === -1 &&
+                absolutePath.indexOf("options") === -1) {
                 return;
             }
 
             // 过滤 JetBrains 下的非 options 目录
-            if (absolute_path.indexOf("JetBrains") !== -1 &&
-                // !/\d/.test(absolute_path) &&
+            if (absolutePath.indexOf("JetBrains") !== -1 &&
+                // !/\d/.test(absolutePath) &&
                 // 排除 JetBrains 下第一级的目录
-                absolute_path.split('/').indexOf('JetBrains') !== absolute_path.split('/').length - 2 &&
-                absolute_path.indexOf("options") === -1) {
+                absolutePath.split('/').indexOf('JetBrains') !== absolutePath.split('/').length - 2 &&
+                absolutePath.indexOf("options") === -1) {
                 return;
             }
 
-            readFileList(absolute_path + "/", filesList)
+            readFileList(absolutePath + "/", filesList)
         } else {
-            if (itm === "recentProjects.xml" || itm === "recentSolutions.xml") {
-                filesList.push(absolute_path);
+            if (itm === "recentProjects.xml"){
+                filesList.push({"absolutePath": absolutePath, "atimeMs": stat.atimeMs});
+            } else if (itm === "recentSolutions.xml"){
+                filesList.push({absolutePath});
             }
         }
     })
@@ -60,10 +62,29 @@ function serarchFiles(element) {
         return [config.home.concat(element)]
     }
 
+    if (element.indexOf("Google") !== -1) {
+        const files = readFileList(config.home.concat(element), [])
+        return files.map(file => file.absolutePath)
+    }
+
     // JetBrains && AndroidStudio 文件夹
-    if (element.indexOf("JetBrains") !== -1 ||
-        element.indexOf("Google") !== -1) {
-        return readFileList(config.home.concat(element), [])
+    if (element.indexOf("JetBrains") !== -1) {
+        let files = [];
+        let ides = new Set()
+        let allRecentProjects = readFileList(config.home.concat(element), [])
+
+        // 先排序，后遍历，排除重复
+        allRecentProjects.sort(function(a, b){return b.atimeMs - a.atimeMs});
+        for (let i = 0; i < allRecentProjects.length; i++) {
+            const absolutePath = allRecentProjects[i].absolutePath;
+            const ideStr = absolutePath.split("JetBrains/")[1].substring(0, 4)
+            if (!ides.has(ideStr)) {
+                files.push(absolutePath)
+                ides.add(ideStr)
+            }
+        }
+
+        return files;
     }
 }
 
@@ -81,8 +102,9 @@ function getFileContent(element) {
         } else if (element.indexOf("xcode") !== -1) {   // xcode
             return parsers.xcodeParsers()
         }
-    } catch (e) {
-        console.log(e)
+    } catch (err) {
+        console.log(err)
+        utools.showNotification(err);
     }
 
 }
@@ -129,29 +151,12 @@ let asyncFileHistoryIterable = {
 
 
 async function getHistory() {
-    let allRecentProjects = []
-    let ides = new Set()
     recentProjects = []
     allHistory = []
 
     // 遍历目录下获取所有的 recentProjects.xml 文件
     for await (element of asyncHistoryIterable) {
-        allRecentProjects.push(...element)
-    }
-
-    // 先排序，后遍历，排除重复
-    allRecentProjects.sort();
-    allRecentProjects.reverse();
-    for (let i = 0; i < allRecentProjects.length; i++) {
-        if (allRecentProjects[i].indexOf("JetBrains/") !== -1) {
-            const ideStr = allRecentProjects[i].split("JetBrains/")[1].substring(0, 4)
-            if (!ides.has(ideStr)) {
-                recentProjects.push(allRecentProjects[i])
-                ides.add(ideStr)
-            }
-        } else {
-            recentProjects.push(allRecentProjects[i])
-        }
+        recentProjects.push(...element)
     }
 
     // 读取所有的文件的配置
