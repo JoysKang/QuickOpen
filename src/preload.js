@@ -173,9 +173,9 @@ let History = {
     mode: "list",
     args: {
         enter: async (action, callbackSetList) => {
-            console.time('start')
+            // console.time('start')
             await getHistory();
-            console.timeEnd('start')
+            // console.timeEnd('start')
             callbackSetList(allHistory);
         },
 
