@@ -6,12 +6,7 @@ function readToolboxExecutableFile(path, filesList) {
     files.forEach(function (itm) {
         let stat = fs.lstatSync(path + itm);
         const absolutePath = path + itm
-        if (stat.isDirectory() && absolutePath.indexOf("jbr") === -1
-            && absolutePath.indexOf("lib") === -1
-            && absolutePath.indexOf("license") === -1
-            && absolutePath.indexOf("plugins") === -1
-            && absolutePath.indexOf("bin") === -1
-            && absolutePath.indexOf("Resources") === -1) {
+        if (stat.isDirectory()) {
             readToolboxExecutableFile(absolutePath + "/", filesList)
         } else{
             if (absolutePath.indexOf("/MacOS/") !== -1) {
