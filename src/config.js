@@ -1,3 +1,6 @@
+const fs = require("fs");
+const { readToolboxExecutableFile } = require('./readToolboxExecutableFile');
+
 // home
 const home = process.env.HOME
 
@@ -29,6 +32,13 @@ const executableFile = {
     "sublime": "/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl",
     "studio": "/Applications/Android\ Studio.app/Contents/MacOS/studio",
     "xcode": "/Applications/Xcode.app/Contents/MacOS/Xcode"
+}
+path = home.concat("/Library/Application Support/JetBrains/Toolbox/apps/")
+const toolboxExecutableFile = readToolboxExecutableFile(path, [])
+for (let key in executableFile) {
+    if (!fs.existsSync(executableFile[key])) {
+        executableFile[key] = toolboxExecutableFile.find(itm => itm.indexOf(key) !== -1)
+    }
 }
 
 
