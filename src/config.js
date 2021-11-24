@@ -34,12 +34,15 @@ const executableFile = {
     "xcode": "/Applications/Xcode.app/Contents/MacOS/Xcode"
 }
 path = home.concat("/Applications/JetBrains\ Toolbox/")
-const toolboxExecutableFile = readToolboxExecutableFile(path, [])
-for (let key in executableFile) {
-    if (!fs.existsSync(executableFile[key])) {
-        executableFile[key] = toolboxExecutableFile.find(itm => itm.toLowerCase().indexOf(key) !== -1)
+if (fs.existsSync(path)) {
+    const toolboxExecutableFile = readToolboxExecutableFile(path, [])
+    for (let key in executableFile) {
+        if (!fs.existsSync(executableFile[key])) {
+            executableFile[key] = toolboxExecutableFile.find(itm => itm.toLowerCase().indexOf(key) !== -1)
+        }
     }
 }
+
 
 
 // icon
