@@ -38,7 +38,10 @@ if (fs.existsSync(path)) {
     const toolboxExecutableFile = readToolboxExecutableFile(path, [])
     for (let key in executableFile) {
         if (!fs.existsSync(executableFile[key])) {
-            executableFile[key] = toolboxExecutableFile.find(itm => itm.toLowerCase().indexOf(key) !== -1)
+            const file = toolboxExecutableFile.find(itm => itm.toLowerCase().indexOf(key) !== -1)
+            if (file) {
+                executableFile[key] = file
+            }
         }
     }
 }
