@@ -1,5 +1,5 @@
 const { execSync } = require('child_process');
-const {isEmpty, isNil} = require('licia');
+const { isEmpty, isNil } = require('licia');
 const config = require("./config");
 const fs = require('fs')
 
@@ -35,8 +35,13 @@ function readXcodeHistory() {
     // 判断 com.apple.dt.xcode.sfl2 文件是否存在
     let configPath = "/Library/Application\ Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.ApplicationRecentDocuments/com.apple.dt.xcode.sfl2"
     configPath = config.home.concat(configPath)
+    let stat = "";
+    try {
+        stat = fs.statSync(configPath)
+    } catch (err) {
+        return []
+    }
 
-    const stat = fs.statSync(configPath)
     const lastTime = utools.dbStorage.getItem("lastTime")
     // 不常使用，使用数据库记录(缓存)
     if (stat && stat.mtimeMs === lastTime) {
