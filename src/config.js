@@ -33,12 +33,26 @@ const executableFile = {
     "studio": "/Applications/Android\ Studio.app/Contents/MacOS/studio",
     "xcode": "/Applications/Xcode.app/Contents/MacOS/Xcode"
 }
-path = home.concat("/Applications/JetBrains\ Toolbox/")
+path = home.concat("/Library/Application\ Support/JetBrains/Toolbox/apps/")
 if (fs.existsSync(path)) {
-    const toolboxExecutableFile = readToolboxExecutableFile(path, [])
+    let files = [];
+    let ides = new Set()
+    let toolboxExecutableFile = readToolboxExecutableFile(path, [])
+
+    // 先排序，后遍历，排除重复
+    toolboxExecutableFile.sort(function(a, b){return b.atimeMs - a.atimeMs});
+    for (let i = 0; i < toolboxExecutableFile.length; i++) {
+        const absolutePath = toolboxExecutableFile[i].absolutePath;
+        const ideStr = absolutePath.split("MacOS/")[1].substring(0, 4)
+        if (!ides.has(ideStr)) {
+            files.push(absolutePath)
+            ides.add(ideStr)
+        }
+    }
+
     for (let key in executableFile) {
         if (!fs.existsSync(executableFile[key])) {
-            const file = toolboxExecutableFile.find(itm => itm.toLowerCase().indexOf(key) !== -1)
+            const file = files.find(itm => itm.toLowerCase().indexOf(key) !== -1)
             if (file) {
                 executableFile[key] = file
             }

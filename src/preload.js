@@ -68,7 +68,6 @@ function serarchFiles(element) {
         let files = [];
         let ides = new Set()
         let allRecentProjects = readFileList(config.home.concat(element), [])
-        console.log(allRecentProjects, "////")
 
         // 先排序，后遍历，排除重复
         allRecentProjects.sort(function(a, b){return b.atimeMs - a.atimeMs});
