@@ -39,13 +39,13 @@ function readXcodeHistory() {
     try {
         stat = fs.statSync(configPath)
     } catch (err) {
-        return []
+        return [[], 0];
     }
 
     const lastTime = utools.dbStorage.getItem("lastTime")
     // 不常使用，使用数据库记录(缓存)
     if (stat && stat.mtimeMs === lastTime) {
-        return utools.dbStorage.getItem("stdout")
+        return [utools.dbStorage.getItem("stdout"), 0]
     } else {
         utools.dbStorage.setItem("lastTime", stat.mtimeMs)
     }
@@ -54,10 +54,10 @@ function readXcodeHistory() {
     if (!isNil(result) && !isEmpty(result)) {
         const paths = result.split(',').map(p => p.trim());
         utools.dbStorage.setItem("stdout", paths)
-        return paths
+        return [paths, stat.atimeMs]
     }
 
-    return [];
+    return [[], 0];
 }
 
 

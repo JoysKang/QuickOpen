@@ -39,10 +39,10 @@ function getIcon(key) {
 // 判断路径是否存在
 function checkPath(path) {
     try {
-        fs.accessSync(path);
-        return true
+        const file = fs.lstatSync(path);
+        return [true, file.atimeMs]
     } catch (err) {
-        return false
+        return [false, 0]
     }
 }
 
@@ -50,12 +50,13 @@ function checkPath(path) {
 let parser = new xml2js.Parser();
 
 function jetBrainsParsers(fileName) {
-    if (fileName.indexOf('xml') === -1) {
-        return [];
+    const [isExist, _] = checkPath(fileName);
+    if (!isExist) {
+        return []
     }
 
-    if (!checkPath(fileName)) {
-        return []
+    if (fileName.indexOf('xml') === -1) {
+        return [];
     }
 
     let projectList = []
@@ -93,7 +94,8 @@ function jetBrainsParsers(fileName) {
 
 
 function vscodeParsers(fileName) {
-    if (!checkPath(fileName)) {
+    const [isExist, atime] = checkPath(fileName);
+    if (!isExist) {
         return []
     }
     let data = fs.readFileSync(fileName)
@@ -119,7 +121,7 @@ function vscodeParsers(fileName) {
             icon: icon,
             executableFile: executableFile,
             description: checkPath(item) ? item : "项目路径已不存在",
-            openTimestamp: 0,
+            openTimestamp: atime,
             title: path.basename(item)
         });
     }
@@ -128,7 +130,8 @@ function vscodeParsers(fileName) {
 
 
 function sublimeParsers(fileName) {
-    if (!checkPath(fileName)) {
+    const [isExist, atime] = checkPath(fileName);
+    if (!isExist) {
         return []
     }
 
@@ -151,7 +154,7 @@ function sublimeParsers(fileName) {
             icon: icon,
             executableFile: executableFile,
             description: checkPath(item) ? item : "项目路径已不存在",
-            openTimestamp: 0,
+            openTimestamp: atime,
             title: path.basename(item)
         });
     }
@@ -161,7 +164,7 @@ function sublimeParsers(fileName) {
 
 function xcodeParsers() {
     // console.time('start')
-    const data = xcode.readXcodeHistory()
+    const [data, atime] = xcode.readXcodeHistory()
     // console.timeEnd('start')
     if (!data.length) {
         return [];
@@ -178,7 +181,7 @@ function xcodeParsers() {
             icon: icon,
             executableFile: executableFile,
             description: checkPath(item) ? item : "项目路径已不存在",
-            openTimestamp: 0,
+            openTimestamp: atime,
             title: path.basename(item)
         });
     }
