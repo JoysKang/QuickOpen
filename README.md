@@ -1,5 +1,8 @@
 # QuickOpen
 
+
+### 该项目已放弃维护，个人已迁移到 raycast 的历史项目插件 [open-history-item](https://github.com/JoysKang/open-history-item).
+
 ### 简介
 
 使用 uTools 工具快速打开历史项目, 支持 JetBrains、vscode、sublime、AndroidStudio、 Xcode。
